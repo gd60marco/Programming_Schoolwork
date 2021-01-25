@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
         Vector3 localMove = Camera.main.transform.right * _moveInput.x + forward * _moveInput.y;
 
         _characterMovement.SetMoveInput(localMove);
-        _characterMovement.SetLookDiregtion(forward);
+        _characterMovement.SetLookDirection(forward);
     }
 
     //CONTROL MESSAGES _________________________________________________________________
