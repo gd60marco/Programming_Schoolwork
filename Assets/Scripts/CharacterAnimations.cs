@@ -10,8 +10,10 @@ public class CharacterAnimations : MonoBehaviour
 
     private void Update()
     {
+        // convert world MoveInput to local direction
         Vector3 moveDirection = transform.InverseTransformDirection(_characterMovement.MoveInput);
-        //Set animator values
+
+        // set animator values
         _animator.SetFloat("Forward", moveDirection.z, _dampTime, Time.deltaTime);
         _animator.SetFloat("Strafe", moveDirection.x, _dampTime, Time.deltaTime);
     }
