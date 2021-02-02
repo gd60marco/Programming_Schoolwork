@@ -15,6 +15,7 @@ MonoBehaviour:
   _characterMovement: {fileID: 918931345281918947}
   _characterHead: {fileID: 4684849062623725872}
   _targetable: {fileID: 5121277298745333690}
+  _weapon: {fileID: 0}
   _attackDistance: 5
   _visionHalfAngle: 60
   _visionDistance: 10
@@ -24,21 +25,8 @@ MonoBehaviour:
   _targetingMask:
     serializedVersion: 2
     m_Bits: 256
---- !u!114 &4141157824215854707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699409967268181232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a96e7fca5643fa47b69fd8ad7a3e2b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _firePeriod: 0.2
-  _targetable: {fileID: 0}
-  _projectilePrefab: {fileID: 3583522595934053565, guid: 06804faf5fc9a0b45a0475e14d2ea4c7, type: 3}
+  _patrolPointTag: PatrolPoint
+  _patrolPointReachedDistance: 1
 --- !u!1001 &918931346882259218
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -92,11 +80,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2027143417224087879, guid: 903b12219b0e03c44a9e1a278357203d, type: 3}
       propertyPath: m_Name
-      value: Bot (3)
+      value: Bot
       objectReference: {fileID: 0}
     - target: {fileID: 5463672982522019496, guid: 903b12219b0e03c44a9e1a278357203d, type: 3}
       propertyPath: _team
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 903b12219b0e03c44a9e1a278357203d, type: 3}
@@ -130,10 +118,5 @@ MonoBehaviour:
 --- !u!4 &4684849062623725872 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5603426086380707874, guid: 903b12219b0e03c44a9e1a278357203d, type: 3}
-  m_PrefabInstance: {fileID: 918931346882259218}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1699409967268181232 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1969541351005773282, guid: 903b12219b0e03c44a9e1a278357203d, type: 3}
   m_PrefabInstance: {fileID: 918931346882259218}
   m_PrefabAsset: {fileID: 0}

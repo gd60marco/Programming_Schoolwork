@@ -30,12 +30,14 @@ public class CharacterMovement : MonoBehaviour
     public Vector3 LookDirection {get; private set;}
     public bool IsGrounded {get; private set;}
     public Vector3 GroundNormal {get; private set;}
+    public bool CanMove { get; set; } = true;
 
     private void Start()
     {
         // disable NavMeshAgent of the character
         _navMeshAgent.updatePosition = false;
         _navMeshAgent.updateRotation = false;
+        LookDirection = transform.forward;
     }
 
     public void MoveTo(Vector3 position)
@@ -68,6 +70,8 @@ public class CharacterMovement : MonoBehaviour
 
     public void Jump()
     {
+        // stop if cant move
+        if (!CanMove) return;
         // stop if not grounded
         if(!IsGrounded) return;
 
@@ -95,11 +99,19 @@ public class CharacterMovement : MonoBehaviour
 
         // move NavMeshAgent to character position
         _navMeshAgent.nextPosition = transform.position;
+
     }
 
     private void FixedUpdate()
     {
         IsGrounded = CheckGrounded();
+
+        //zero all input in cant move
+        if (!CanMove)
+        {
+            SetMoveInput(Vector3.zero);
+            SetLookDirection(transform.forward);
+        }
 
         // calculate target velocity and difference from current
         Vector3 targetVelocity = MoveInput * _speed;

@@ -16,11 +16,13 @@ public class Teleportation : MonoBehaviour
     [SerializeField] private float _raycastRadius;
     [SerializeField] private float _raycastVerticalLenght;
 
+    public bool CanTeleport { get; set; } = true;
     private Vector3 teleportCheckPosition;
     private GameObject _marker;
 
     public void TryTeleport()
     {
+        if (!CanTeleport) return;
         //Instantate marker, called by player controller
         _marker = Instantiate(_teleportMarker, teleportCheckPosition, Quaternion.identity);
     }

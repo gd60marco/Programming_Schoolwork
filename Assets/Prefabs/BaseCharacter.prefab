@@ -70,6 +70,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterMovement: {fileID: 1868779249}
   _animator: {fileID: 4722622663659637127}
+  _health: {fileID: 6334060214657042393}
   _dampTime: 0.1
 --- !u!195 &1868779252
 NavMeshAgent:
@@ -107,6 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _team: 1
   _centerTransform: {fileID: 7796379331022288569}
+  _isTargetable: 1
 --- !u!114 &6334060214657042393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,7 +125,43 @@ MonoBehaviour:
   _max: 100
   OnDeath:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1009434157519841600}
+        m_TargetAssemblyTypeName: Weapon, Assembly-CSharp
+        m_MethodName: set_CanFire
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1868779249}
+        m_TargetAssemblyTypeName: CharacterMovement, Assembly-CSharp
+        m_MethodName: set_CanMove
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5463672982522019496}
+        m_TargetAssemblyTypeName: Targetable, Assembly-CSharp
+        m_MethodName: set_isTargetable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3318032701119650347
 GameObject:
   m_ObjectHideFlags: 0

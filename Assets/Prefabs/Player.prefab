@@ -87,6 +87,34 @@ PrefabInstance:
       propertyPath: _team
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6334060214657042393, guid: 903b12219b0e03c44a9e1a278357203d, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6334060214657042393, guid: 903b12219b0e03c44a9e1a278357203d, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6334060214657042393, guid: 903b12219b0e03c44a9e1a278357203d, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 1995086352}
+    - target: {fileID: 6334060214657042393, guid: 903b12219b0e03c44a9e1a278357203d, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6334060214657042393, guid: 903b12219b0e03c44a9e1a278357203d, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: set_CanTeleport
+      objectReference: {fileID: 0}
+    - target: {fileID: 6334060214657042393, guid: 903b12219b0e03c44a9e1a278357203d, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: Teleportation, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6334060214657042393, guid: 903b12219b0e03c44a9e1a278357203d, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 903b12219b0e03c44a9e1a278357203d, type: 3}
 --- !u!1 &6508381784641312877 stripped
