@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private CharacterMovement _characterMovement;
+    [SerializeField] private Teleportation _teleportation;
     [SerializeField] private Weapon _weapon;
     [SerializeField] private Vector2 _moveInput;
 
@@ -27,6 +28,14 @@ public class PlayerController : MonoBehaviour
     {
         // true when value > 0.5f, false when <= 0.5f
         _isFiring = value.Get<float>() > 0.5f;
+    }
+    public void OnTeleportStart()
+    {
+        _teleportation.TryTeleport();
+    }
+    public void OnTeleportEnd()
+    {
+        _teleportation.EndTeleport();
     }
 
     private void Update()
