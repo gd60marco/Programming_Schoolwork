@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float _current = 100f;
+    [SerializeField] private float _current = 100f; 
     [SerializeField] private float _max = 100f;
 
     public float Percentage => _current / _max;
@@ -28,5 +28,16 @@ public class Health : MonoBehaviour
 
         // invoke death, if dead
         if(!IsAlive) OnDeath.Invoke();
+    }
+    public void Heal(float amount)
+    {
+        if (!IsAlive) return;
+        if(amount <= 0f)
+        {
+            Debug.LogWarning("Use the Damage function, jerk!");
+            return;
+        }
+
+        _current = Mathf.Clamp(_current + amount, 0f, _max);
     }
 }

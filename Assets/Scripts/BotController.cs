@@ -9,6 +9,7 @@ public class BotController : MonoBehaviour
     [SerializeField] private Transform _characterHead;
     [SerializeField] private Targetable _targetable;
     [SerializeField] private Weapon _weapon;
+    [SerializeField] private Health _health;
 
     [Header("Tuning")]
     [SerializeField] private float _attackDistance = 5f;
@@ -20,12 +21,16 @@ public class BotController : MonoBehaviour
     [Header("States")]
     [SerializeField] private string _patrolPointTag = "PatrolPoint";
     [SerializeField] private float _patrolPointReachedDistance = 1f;
+    [SerializeField] private float _fleePointReachedDistance = 1f;
+    [SerializeField] private float _healthFleePercentage = 0.5f;
+    [SerializeField] private float _amountHealedAfterFlee = 50f;
  
     private Targetable _target;
     private float TargetDistance => Vector3.Distance(_target.Center, _targetable.Center);
     public bool IsTargetValid => _target != null && _target.isTargetable;
 
     private IEnumerator _currentState; //Reference to current coroutine executing
+    private GameObject[] _patrolPoints; //Moved patrolPoints here since more than one function references it
 
 
     //AI STATE MACHINE _______________________________________________________________________
@@ -38,11 +43,38 @@ public class BotController : MonoBehaviour
         _currentState = nextState;
         StartCoroutine(_currentState);
     }
+    private IEnumerator FleeState()
+    {
+        Debug.Log("Entered flee state!");
+        //Make an array of patrol points for the sake of avoiding randomness
+        GameObject patrolPoint = _patrolPoints[Random.Range(0, _patrolPoints.Length)];
 
+        while(true)
+        {
+            //Check distance to flee point
+            float distance = Vector3.Distance(patrolPoint.transform.position, transform.position);
+            if (distance < _fleePointReachedDistance)
+            {
+                if(TryFindTarget(true)) //If can still see player, set next point and continue fleeing
+                {
+                    patrolPoint = _patrolPoints[Random.Range(0, _patrolPoints.Length)];
+                }
+                else //If can't see player, heal and switch to patrol state
+                {
+                    _health.Heal(_amountHealedAfterFlee);
+                    NextState(PatrolState());
+                }
+            }
+
+            //move to current patrol point
+            _characterMovement.MoveTo(patrolPoint.transform.position);
+
+            yield return null;
+        }
+    }
     private IEnumerator PatrolState()
     {
-        GameObject[] patrolPoints = GameObject.FindGameObjectsWithTag(_patrolPointTag);
-        GameObject patrolPoint = patrolPoints[Random.Range(0, patrolPoints.Length)];
+        GameObject patrolPoint = _patrolPoints[Random.Range(0, _patrolPoints.Length)];
 
         //loop forever in patrol state
         while(true)
@@ -51,7 +83,7 @@ public class BotController : MonoBehaviour
             float distance = Vector3.Distance(patrolPoint.transform.position, transform.position);
             if (distance < _patrolPointReachedDistance)
             {
-                patrolPoint = patrolPoints[Random.Range(0, patrolPoints.Length)];
+                patrolPoint = _patrolPoints[Random.Range(0, _patrolPoints.Length)];
             }
 
             //Move to patrol point
@@ -102,6 +134,9 @@ public class BotController : MonoBehaviour
                 _characterMovement.Stop();
                 _characterMovement.SetLookDirection(directionToTarget);
                 _weapon.TryFire(_target.Center);
+
+                //Flee if wounded!
+                if (_health.Percentage < _healthFleePercentage) NextState(FleeState());
             }
             else
             {
@@ -117,13 +152,33 @@ public class BotController : MonoBehaviour
     //UNITY FUNCTIONS ___________________________________________________________________________________
     private void Start()
     {
+        _patrolPoints = GameObject.FindGameObjectsWithTag(_patrolPointTag); //Moved setting array here since more than one function references it
         NextState(PatrolState());
-
         _weapon = GetComponentInChildren<Weapon>();
     }
 
     //Custom Methods ___________________________________________________________________________
-  
+    private bool TryFindTarget(bool ignore) //A version of TryFindTarget that doesn't call Chase State (extra parameters only there to diferentiate)
+    {
+        // find all colliders within vision radius that are on targetingMask layer
+        Collider[] hits = Physics.OverlapSphere(_characterHead.position, _visionDistance, _targetingMask);
+
+        // find appropriate target in hits array
+        foreach (Collider hit in hits)
+        {
+            // check for targetable component on collider, and compare against team and visibility
+            if (hit.TryGetComponent(out Targetable possibleTarget) &&
+                possibleTarget.Team != _targetable.Team &&
+                possibleTarget.isTargetable &&
+                CanSeePoint(possibleTarget.Center))
+            {
+                // assign target and break out of foreach loop
+                _target = possibleTarget;
+                return true;
+            }
+        }
+        return false;
+    }
     private void TryFindTarget()
     {
         // find all colliders within vision radius that are on targetingMask layer

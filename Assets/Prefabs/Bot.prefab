@@ -15,7 +15,8 @@ MonoBehaviour:
   _characterMovement: {fileID: 918931345281918947}
   _characterHead: {fileID: 4684849062623725872}
   _targetable: {fileID: 5121277298745333690}
-  _weapon: {fileID: 0}
+  _weapon: {fileID: 198871092238925906}
+  _health: {fileID: 6568404417521004235}
   _attackDistance: 5
   _visionHalfAngle: 60
   _visionDistance: 10
@@ -27,6 +28,7 @@ MonoBehaviour:
     m_Bits: 256
   _patrolPointTag: PatrolPoint
   _patrolPointReachedDistance: 1
+  _fleePointReachedDistance: 1
 --- !u!1001 &918931346882259218
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -115,8 +117,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7439b5b639917c34aa6b391ea9231919, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6568404417521004235 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6334060214657042393, guid: 903b12219b0e03c44a9e1a278357203d, type: 3}
+  m_PrefabInstance: {fileID: 918931346882259218}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216375430551609429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 305d842d4de149040bc25f320fe7eb23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4684849062623725872 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5603426086380707874, guid: 903b12219b0e03c44a9e1a278357203d, type: 3}
   m_PrefabInstance: {fileID: 918931346882259218}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &198871092238925906 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1009434157519841600, guid: 903b12219b0e03c44a9e1a278357203d, type: 3}
+  m_PrefabInstance: {fileID: 918931346882259218}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a96e7fca5643fa47b69fd8ad7a3e2b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
