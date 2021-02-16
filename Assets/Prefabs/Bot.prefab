@@ -29,6 +29,9 @@ MonoBehaviour:
   _patrolPointTag: PatrolPoint
   _patrolPointReachedDistance: 1
   _fleePointReachedDistance: 1
+  _healthFleePercentage: 0.5
+  _amountHealedAfterFlee: 50
+  _fleeSpeedMultiplier: 2
 --- !u!1001 &918931346882259218
 PrefabInstance:
   m_ObjectHideFlags: 0

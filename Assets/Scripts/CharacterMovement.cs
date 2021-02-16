@@ -10,9 +10,9 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private NavMeshAgent _navMeshAgent;
 
     [Header("Movement")]
-    [SerializeField] private float _speed = 5f;
     [SerializeField] private float _acceleration = 10f;
     [SerializeField] private float _turnSpeed = 10f;
+    [SerializeField] private float _speed = 5f;
 
     [Header("Jumping")]
     [SerializeField] private float _gravity = 20f;
@@ -32,6 +32,7 @@ public class CharacterMovement : MonoBehaviour
     public Vector3 GroundNormal {get; private set;}
     public bool CanMove { get; set; } = true;
 
+    public float Speed => _speed;
     private void Start()
     {
         // disable NavMeshAgent of the character
@@ -40,6 +41,10 @@ public class CharacterMovement : MonoBehaviour
         LookDirection = transform.forward;
     }
 
+    public void SetSpeed(float newSpeed)
+    {
+        _speed = newSpeed;
+    }
     public void MoveTo(Vector3 position)
     {
         // tell NavMeshAgent to move to position

@@ -24,6 +24,7 @@ public class BotController : MonoBehaviour
     [SerializeField] private float _fleePointReachedDistance = 1f;
     [SerializeField] private float _healthFleePercentage = 0.5f;
     [SerializeField] private float _amountHealedAfterFlee = 50f;
+    [SerializeField] private float _fleeSpeedMultiplier = 2f;
  
     private Targetable _target;
     private float TargetDistance => Vector3.Distance(_target.Center, _targetable.Center);
@@ -31,6 +32,7 @@ public class BotController : MonoBehaviour
 
     private IEnumerator _currentState; //Reference to current coroutine executing
     private GameObject[] _patrolPoints; //Moved patrolPoints here since more than one function references it
+    private float _originalSpeed;
 
 
     //AI STATE MACHINE _______________________________________________________________________
@@ -48,20 +50,22 @@ public class BotController : MonoBehaviour
         Debug.Log("Entered flee state!");
         //Make an array of patrol points for the sake of avoiding randomness
         GameObject patrolPoint = _patrolPoints[Random.Range(0, _patrolPoints.Length)];
+        _characterMovement.SetSpeed(_originalSpeed * _fleeSpeedMultiplier); //Flee speed! Run like the wind!
 
-        while(true)
+        while (true)
         {
             //Check distance to flee point
             float distance = Vector3.Distance(patrolPoint.transform.position, transform.position);
             if (distance < _fleePointReachedDistance)
             {
-                if(TryFindTarget(true)) //If can still see player, set next point and continue fleeing
+                if(TargetsFound() == true) //If can still see player, set next point and continue fleeing
                 {
                     patrolPoint = _patrolPoints[Random.Range(0, _patrolPoints.Length)];
                 }
                 else //If can't see player, heal and switch to patrol state
                 {
                     _health.Heal(_amountHealedAfterFlee);
+                    _characterMovement.SetSpeed(_originalSpeed); //Back to regular speed
                     NextState(PatrolState());
                 }
             }
@@ -108,7 +112,9 @@ public class BotController : MonoBehaviour
             }
             else
             {
-                //In range and visible!!
+                //Flee if wounded!
+                if (_health.Percentage < _healthFleePercentage) NextState(FleeState());
+                //In range and visible (and not wounded)!!
                 NextState(AttackState());
             }
 
@@ -155,10 +161,12 @@ public class BotController : MonoBehaviour
         _patrolPoints = GameObject.FindGameObjectsWithTag(_patrolPointTag); //Moved setting array here since more than one function references it
         NextState(PatrolState());
         _weapon = GetComponentInChildren<Weapon>();
-    }
+        _originalSpeed = _characterMovement.Speed;
+}
 
     //Custom Methods ___________________________________________________________________________
-    private bool TryFindTarget(bool ignore) //A version of TryFindTarget that doesn't call Chase State (extra parameters only there to diferentiate)
+
+    private bool TargetsFound()
     {
         // find all colliders within vision radius that are on targetingMask layer
         Collider[] hits = Physics.OverlapSphere(_characterHead.position, _visionDistance, _targetingMask);
@@ -168,37 +176,22 @@ public class BotController : MonoBehaviour
         {
             // check for targetable component on collider, and compare against team and visibility
             if (hit.TryGetComponent(out Targetable possibleTarget) &&
-                possibleTarget.Team != _targetable.Team &&
-                possibleTarget.isTargetable &&
-                CanSeePoint(possibleTarget.Center))
+            possibleTarget.Team != _targetable.Team &&
+            possibleTarget.isTargetable &&
+            CanSeePoint(possibleTarget.Center))
             {
-                // assign target and break out of foreach loop
-                _target = possibleTarget;
+            // assign target and break out of foreach loop
+            _target = possibleTarget;
                 return true;
             }
         }
         return false;
     }
+
     private void TryFindTarget()
     {
-        // find all colliders within vision radius that are on targetingMask layer
-        Collider[] hits = Physics.OverlapSphere(_characterHead.position, _visionDistance, _targetingMask);
-
-        // find appropriate target in hits array
-        foreach (Collider hit in hits)
-        {
-            // check for targetable component on collider, and compare against team and visibility
-            if (hit.TryGetComponent(out Targetable possibleTarget) &&
-                possibleTarget.Team != _targetable.Team &&
-                possibleTarget.isTargetable &&
-                CanSeePoint(possibleTarget.Center))
-            {
-                // assign target and break out of foreach loop
-                _target = possibleTarget;
-                NextState(ChaseState());
-                break;
-            }
-        }
+        if(TargetsFound() == true)
+          NextState(ChaseState());
     }
     private bool CanSeePoint(Vector3 point)
     {
